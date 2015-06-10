@@ -1,6 +1,7 @@
 #replays
 ##todo
-finish writing, hard rock converter  
+figure out a way to write BinaryWriter strings in Java  
+convert replay to HR by inverting y values etc.
 
 ##format
 ScoreDatabase.cs
@@ -19,10 +20,10 @@ ScoreDatabase.cs
 * uint32 - points (total score)
 * uint16 - max combo
 * boolean - dummy value? unsure
-* int32 - mods (described below) (how are mods calculated when used in conjunction with each other? are the values added?)
+* int32 - mods (described below) (to combine mods, do x | y {e.g hdhr would be 16 | 8})
 * string - diagram (unsure what this is)
 * date - timestamp
-* byte[] - compressed replay data
+* byte[] - compressed replay data (7zip compressed data described below)
 * int32 - online score ID (only if file version >= 20121008)
 
 
@@ -64,4 +65,30 @@ Hit300, Hit50, Hit300Beat, Hit100Beat, Hit0, BeatmapMd5, maxCombo, bool_4, UserN
         Random = 2097152,
         LastMod = 4194304,
         FreeModAllowed = 2077883
+    }  
+
+
+    public string method_4() {
+        var stringBuilder = new StringBuilder();
+        if (ReplayHits != null) {
+            var @class = new ReplayElement(0, 0f, 0f, pButtonState.None);
+            foreach (ReplayElement current in ReplayHits) {
+                stringBuilder.AppendFormat("{0}|{1}|{2}|{3},", new object[]
+                {
+                    current.Offset - @class.Offset,
+                    current.X.ToString(Osu.NumberFormat),
+                    current.Y.ToString(Osu.NumberFormat),
+                        (int) Class707.smethod_27(current.Left1Down, current.Left2Down, current.Right1Down, current.Right2Down)
+                });
+                @class = current;
+                }
+        }
+        stringBuilder.AppendFormat("{0}|{1}|{2}|{3},", new object[]
+        {
+            -12345,
+            0,
+            0,
+            int_6
+        });
+        return stringBuilder.ToString();
     }
