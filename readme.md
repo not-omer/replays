@@ -2,28 +2,28 @@
 ##todo
 finish writing, hard rock converter  
 
-
+##format
 ScoreDatabase.cs
 
-byte - game mode
-int32 - file version
-string - beatmap md5
-string - username
-string - hash, described below
-uint16 - number of 300 hits
-uint16 - number of 100 hits
-uint16 - number of 50 hits
-uint16 - number of 300 beats
-uint16 - number of 100 beats
-uint16 - number of misses
-uint32 - points (total score)
-uint16 - max combo
-boolean - dummy value? unsure
-int32 - mods (described below) (how are mods calculated when used in conjunction with each other? are the values added?)
-string - diagram (unsure what this is)
-date - timestamp
-byte[] - compressed replay data
-int32 - online score ID (only if file version >= 20121008)
+* byte - game mode
+* int32 - file version
+* string - beatmap md5
+* string - username
+* string - hash, described below
+* uint16 - number of 300 hits
+* uint16 - number of 100 hits
+* uint16 - number of 50 hits
+* uint16 - number of 300 beats
+* uint16 - number of 100 beats
+* uint16 - number of misses
+* uint32 - points (total score)
+* uint16 - max combo
+* boolean - dummy value? unsure
+* int32 - mods (described below) (how are mods calculated when used in conjunction with each other? are the values added?)
+* string - diagram (unsure what this is)
+* date - timestamp
+* byte[] - compressed replay data
+* int32 - online score ID (only if file version >= 20121008)
 
 
 
@@ -32,15 +32,15 @@ int32 - online score ID (only if file version >= 20121008)
 
 
 
-string hash = string.Format("{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}", new object[] { Hit100 + 
+```string hash = string.Format("{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}", new object[] { Hit100 + 
+Hit300, Hit50, Hit300Beat, Hit100Beat, Hit0, BeatmapMd5, maxCombo, bool_4, UserName, Points, GetRanking(), (int) _property<Mods>.Get(Mods), bool_2 });```
 
-Hit300, Hit50, Hit300Beat, Hit100Beat, Hit0, BeatmapMd5, maxCombo, bool_4, UserName, Points, GetRanking(), (int) _property<Mods>.Get(Mods), bool_2 });
 
 
- public enum Mods
-    {
+    public enum Mods
+    {  
         None = 0,
-        NoFail = 1,
+        NoFail = 1,  
         Easy = 2,
         Hidden = 8,
         HardRock = 16,
