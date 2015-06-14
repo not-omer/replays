@@ -4,11 +4,14 @@ import java.util.Date;
 
 public class Replay {
   private Mode mode;
-  private int fileVersion, mods, onlineScoreID;
-  private int hit300, hit100, hit50, beat300, beat100, misses, maxCombo;
+  private int fileVersion, mods;
+  private long onlineScoreID;
+  private int hit300, hit100, hit50, beat300, beat100, misses, maxCombo,
+      points;
   private String md5, username, hash, diagram;
   private Date timestamp;
   private byte[] compressed;
+  private boolean perfect;
 
   public int getFileVersion() {
     return fileVersion;
@@ -30,8 +33,8 @@ public class Replay {
     this.mods = mods;
   }
 
-  public void setOnlineScoreID(int onlineScoreID) {
-    this.onlineScoreID = onlineScoreID;
+  public void setOnlineScoreID(long l) {
+    this.onlineScoreID = l;
   }
 
   public void setHit300(int hit300) {
@@ -86,7 +89,7 @@ public class Replay {
     this.compressed = compressed;
   }
 
-  public int getOnlineScoreID() {
+  public long getOnlineScoreID() {
     return onlineScoreID;
   }
 
@@ -144,5 +147,21 @@ public class Replay {
 
   public Mode getMode() {
     return mode;
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public void setPoints(int points) {
+    this.points = points;
+  }
+
+  public boolean isPerfect() {
+    return perfect;
+  }
+
+  public void setPerfect(boolean isPerfect) {
+    this.perfect = isPerfect;
   }
 }

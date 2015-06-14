@@ -19,4 +19,8 @@ public class Utilities {
     fis.close();
     return md5;
   }
+
+  public static String md5(String string) {
+    return DigestUtils.md5Hex(string);
+  }
 }

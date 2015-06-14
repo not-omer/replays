@@ -3,29 +3,11 @@ package me.replays.stream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
-/**
- * I only implemented the necessary methods, there are still a ton more
- * 
- * @author Omer
- */
 public class OsuBinaryWriter extends DataOutputStream {
-  private byte[] largeByteBuffer;
-  private int maxChars;
-  private final int largeByteBufferSize = 256;
-
   public OsuBinaryWriter(OutputStream out) {
     super(out);
-  }
-
-  public void writeByte(byte value) throws IOException {
-    writeByte(value & 0xFF);
-  }
-
-  public void writeChars(char[] chars) throws IOException {
-    if (chars == null)
-      throw new NullPointerException("chars");
-    writeChars(new String(chars));
   }
 
   public void writeUInt16(int value) throws IOException {
@@ -66,32 +48,22 @@ public class OsuBinaryWriter extends DataOutputStream {
     write(buffer);
   }
 
-  /*
-   * public void writeLine(String value) { if (value == null) throw new
-   * NullPointerException("writeLine value");
-   * 
-   * int len = value.getBytes().length; write7BitEncodedInt(len);
-   * 
-   * if (largeByteBuffer == null) { largeByteBuffer = new
-   * byte[largeByteBufferSize]; maxChars = largeByteBufferSize /
-   * _encoding.GetMaxByteCount(1); }
-   * 
-   * if (len <= largeByteBufferSize) { largeByteBuffer = value.getBytes();
-   * write(largeByteBuffer, 0, len); } else { int charStart = 0; int numLeft =
-   * value.length(); int totalBytes = 0; while (numLeft > 0) { int charCount =
-   * (numLeft > maxChars) ? maxChars : numLeft; int byteLen =
-   * getBytes(value.toCharArray() + charStart, charCount, largeByteBuffer,
-   * largeByteBufferSize, charCount == numLeft); totalBytes += byteLen;
-   * write(largeByteBuffer, 0, byteLen); charStart += charCount; numLeft -=
-   * charCount; } } }
-   */
+  public void writeLine(String value) throws IOException {
+    byte[] v = value.getBytes("UTF-8");
+    write7BitEncodedInt(v.length);
+    write(v);
+  }
 
   private void write7BitEncodedInt(int value) throws IOException {
     long v = value & 0x00000000ffffffffL;
     while (v >= 0x80) {
-      write((byte) (v | 0x80));
+      writeByte((byte) (v | 0x80));
       v >>= 7;
     }
-    write((byte) v);
+    writeByte((byte) v);
+  }
+
+  public void writeDate(Date timestamp) throws IOException {
+    writeLong(timestamp.getTime());
   }
 }

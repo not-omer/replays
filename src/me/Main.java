@@ -3,21 +3,21 @@ package me;
 import java.io.File;
 import java.io.IOException;
 
+import me.replays.Mods;
 import me.replays.Replay;
 import me.replays.stream.ReplayReader;
+import me.replays.stream.ReplayWriter;
 
 public class Main {
   public static void main(String[] args) throws IOException {
     ReplayReader reader = new ReplayReader(new File("replay.osr"));
     Replay replay = reader.parse();
 
-    System.out.println(replay.getMode());
-    System.out.println(replay.getUsername());
-    System.out.println(replay.getHit300());
-    System.out.println(replay.getHit100());
-    System.out.println(replay.getHit50());
-    System.out.println(replay.getBeat300());
-    System.out.println(replay.getBeat100());
-    System.out.println(replay.getMisses());
+    // replay.setUsername("AppleJuice");
+    // replay.setMods(Mods.combine(Mods.DoubleTime.value(),
+    // Mods.Flashlight.value()));
+
+    ReplayWriter writer = new ReplayWriter(replay);
+    writer.write(new File("replay2.osr"));
   }
 }

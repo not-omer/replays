@@ -16,14 +16,14 @@ public class ReplayReader {
   }
 
   public Replay parse() throws IOException {
-    if (!Utilities.getExtension(replay).equals("osr")) // TODO or .osg?
+    if (!Utilities.getExtension(replay).equals("osr"))
       throw new IOException("not a valid .osr file!");
 
     OsuBinaryReader in = new OsuBinaryReader(new FileInputStream(replay));
     Replay nReplay = new Replay();
 
-    nReplay.setMode(Mode.values()[in.getByte()]);
-    nReplay.setFileVersion(in.getInt());
+    nReplay.setMode(Mode.values()[in.readByte()]);
+    nReplay.setFileVersion(in.getInt32());
     nReplay.setMd5(in.getLine());
     nReplay.setUsername(in.getLine());
     nReplay.setHash(in.getLine());
@@ -33,13 +33,14 @@ public class ReplayReader {
     nReplay.setBeat300(in.getUInt16());
     nReplay.setBeat100(in.getUInt16());
     nReplay.setMisses(in.getUInt16());
+    nReplay.setPoints(in.getInt32());
     nReplay.setMaxCombo(in.getUInt16());
-    in.readBoolean();
-    nReplay.setMods(in.getInt());
+    nReplay.setPerfect(in.readBoolean());
+    nReplay.setMods(in.getInt32());
     nReplay.setDiagram(in.getLine());
     nReplay.setTimestamp(in.getDate());
     nReplay.setCompressed(in.getBytes());
-    nReplay.setOnlineScoreID(in.getInt());
+    nReplay.setOnlineScoreID(in.getInt64());
 
     in.close();
     return nReplay;

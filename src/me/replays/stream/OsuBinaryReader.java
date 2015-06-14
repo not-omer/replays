@@ -13,13 +13,13 @@ public class OsuBinaryReader extends DataInputStream {
   }
 
   public String getLine() throws IOException {
-    if (getByte() == 0)
+    if (readByte() == 0)
       return null;
     return new String(readBytes(getStringLength()));
   }
 
   public byte[] getBytes() throws IOException {
-    int i = getInt();
+    int i = getInt32();
     if (i > 0) {
       byte[] bytes = new byte[i];
       in.read(bytes);
@@ -36,12 +36,17 @@ public class OsuBinaryReader extends DataInputStream {
 
   public Date getDate() throws IOException {
     long d = readLong();
-    if (d < 0L)
-      throw new IOException("abandoned mutex");
+    // if (d < 0L)
+    // throw new IOException("abandoned mutex");
     return new Date(d);
   }
 
-  public int getInt() throws IOException {
+  public long getInt64() throws IOException {
+    return ByteBuffer.wrap(readBytes(8)).order(ByteOrder.LITTLE_ENDIAN)
+        .getLong();
+  }
+
+  public int getInt32() throws IOException {
     return ByteBuffer.wrap(readBytes(4)).order(ByteOrder.LITTLE_ENDIAN)
         .getInt();
   }
@@ -75,15 +80,6 @@ public class OsuBinaryReader extends DataInputStream {
    * getChars(); case 18: return null; // TODO implement this //
    * BinaryObjectSerializer.ReadObject(BaseStream); default: return null; } }
    */
-
-  /**
-   * in c#, 'byte' represents a value from 0 to 255 while an 'sbyte' represents
-   * a value from -128 to 127 therefore, in.readByte() would yield an sbyte and
-   * not a byte, so we use this method
-   */
-  public int getByte() throws IOException {
-    return readByte() & 0xFF;
-  }
 
   private int getStringLength() throws IOException {
     int count = 0;
