@@ -3,6 +3,7 @@ package me.replays.stream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
 import me.replays.Replay;
@@ -16,13 +17,12 @@ public class ReplayWriter {
   }
 
   public void write(File output) throws IOException {
-    System.out.println(calcHash(replay));
     OsuBinaryWriter out = new OsuBinaryWriter(new FileOutputStream(output));
     out.writeByte((byte) replay.getMode().ordinal());
     out.writeInt32(20150414);
     out.writeLine(replay.getBeatmapHash());
     out.writeLine(replay.getUsername());
-    out.writeLine("5e2f6e9378cfc64870dabd9fdb4119b7"); // calcHash(replay)
+    out.writeLine(calcHash(replay));
     out.writeUInt16(replay.getHit300());
     out.writeUInt16(replay.getHit100());
     out.writeUInt16(replay.getHit50());
@@ -41,14 +41,14 @@ public class ReplayWriter {
     out.close();
   }
 
-  private String calcHash(Replay replay) {
+  private String calcHash(Replay replay) throws UnsupportedEncodingException {
     return Utilities.md5(MessageFormat.format(
         "{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
         replay.getHit100() + replay.getHit300(), replay.getHit50(),
         replay.getBeat300(), replay.getBeat100(), replay.getMisses(),
         replay.getBeatmapHash(), replay.getMaxCombo(),
         Utilities.upper(replay.isPerfect()), replay.getUsername(),
-        replay.getPoints(), "A", replay.getMods(), "True"));
+        Integer.toString(replay.getPoints()), "A", replay.getMods(), "True"));
   }
 
   /*

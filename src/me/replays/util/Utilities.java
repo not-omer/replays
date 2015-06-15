@@ -3,6 +3,7 @@ package me.replays.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -20,10 +21,10 @@ public class Utilities {
     return md5;
   }
 
-  public static String md5(String string) {
+  public static String md5(String string) throws UnsupportedEncodingException {
     return DigestUtils.md5Hex(string);
   }
- 
+
   public static String upper(boolean bool) {
     char[] c = Boolean.toString(bool).toCharArray();
     c[0] = Character.toUpperCase(c[0]);

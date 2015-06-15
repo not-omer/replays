@@ -13,13 +13,6 @@ public enum Mods {
     this.value = value;
   }
 
-  public static int combine(int... mods) {
-    int n = 0;
-    for (int mod : mods)
-      n |= mod;
-    return n;
-  }
-
   public int value() {
     return value;
   }
