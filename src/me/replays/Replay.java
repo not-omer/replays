@@ -65,7 +65,7 @@ public class Replay {
     this.maxCombo = maxCombo;
   }
 
-  public void setMd5(String md5) {
+  public void setBeatmapHash(String md5) {
     this.md5 = md5;
   }
 
@@ -73,7 +73,7 @@ public class Replay {
     this.username = username;
   }
 
-  public void setHash(String hash) {
+  public void setReplayHash(String hash) {
     this.hash = hash;
   }
 
@@ -85,7 +85,7 @@ public class Replay {
     this.timestamp = timestamp;
   }
 
-  public void setCompressed(byte[] compressed) {
+  public void setCompressedData(byte[] compressed) {
     this.compressed = compressed;
   }
 
@@ -121,7 +121,7 @@ public class Replay {
     return maxCombo;
   }
 
-  public String getMd5() {
+  public String getBeatmapHash() {
     return md5;
   }
 
@@ -129,7 +129,7 @@ public class Replay {
     return username;
   }
 
-  public String getHash() {
+  public String getReplayHash() {
     return hash;
   }
 
@@ -141,7 +141,7 @@ public class Replay {
     return timestamp;
   }
 
-  public byte[] getCompressed() {
+  public byte[] getCompressedData() {
     return compressed;
   }
 

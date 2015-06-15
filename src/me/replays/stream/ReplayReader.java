@@ -24,9 +24,9 @@ public class ReplayReader {
 
     nReplay.setMode(Mode.values()[in.readByte()]);
     nReplay.setFileVersion(in.getInt32());
-    nReplay.setMd5(in.getLine());
+    nReplay.setBeatmapHash(in.getLine());
     nReplay.setUsername(in.getLine());
-    nReplay.setHash(in.getLine());
+    nReplay.setReplayHash(in.getLine());
     nReplay.setHit300(in.getUInt16());
     nReplay.setHit100(in.getUInt16());
     nReplay.setHit50(in.getUInt16());
@@ -39,7 +39,7 @@ public class ReplayReader {
     nReplay.setMods(in.getInt32());
     nReplay.setDiagram(in.getLine());
     nReplay.setTimestamp(in.getDate());
-    nReplay.setCompressed(in.getBytes());
+    nReplay.setCompressedData(in.getBytes());
     nReplay.setOnlineScoreID(in.getInt64());
 
     in.close();

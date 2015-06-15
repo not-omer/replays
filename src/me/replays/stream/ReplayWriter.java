@@ -16,12 +16,13 @@ public class ReplayWriter {
   }
 
   public void write(File output) throws IOException {
+    System.out.println(calcHash(replay));
     OsuBinaryWriter out = new OsuBinaryWriter(new FileOutputStream(output));
     out.writeByte((byte) replay.getMode().ordinal());
     out.writeInt32(20150414);
-    out.writeLine(replay.getMd5());
+    out.writeLine(replay.getBeatmapHash());
     out.writeLine(replay.getUsername());
-    out.writeLine("c651f625dd9d8f875266b7b883b5ca20"); // calcHash(replay)
+    out.writeLine("5e2f6e9378cfc64870dabd9fdb4119b7"); // calcHash(replay)
     out.writeUInt16(replay.getHit300());
     out.writeUInt16(replay.getHit100());
     out.writeUInt16(replay.getHit50());
@@ -32,9 +33,10 @@ public class ReplayWriter {
     out.writeUInt16(replay.getMaxCombo());
     out.writeBoolean(replay.isPerfect());
     out.writeInt32(replay.getMods());
-    out.writeLine("6171|1,8265|1,10538|1,12631|1,14732|1,16807|1,18909|1,21002|1,23096|1,25182|1,27279|1,29379|1,31642|1,33749|1,35813|1,38095|1,40365|1,42488|0.98,44538|1,46817|1,48890|1,51175|1,53269|1,55536|1,58154|1,60237|1,62351|1,64410|0.95,66517|1,68635|1,70697|1,72979|1,75076|1,77178|1,79260|1,81345|1,83444|1,85539|1,87632|1,89707|1,91797|1,93906|1,95987|1,98270|1,");
-    out.writeDate(replay.getTimestamp());
-    out.write(replay.getCompressed());
+    out.writeLine("15033|1,7085|1,9207|1,11394|1,13850|1,15852|1,17853|1,19993|1,22007|1,24162|1,26313|1,28466|1,30505|1,32624|1,34777|1,36922|1,39085|1,41393|1,43545|1,45691|1,47696|0.99,49698|1,52005|1,54168|1,56170|1,58320|1,60387|1,62445|1,64468|1,66773|1,68928|1,71095|0.9,73395|1,75399|1,77856|1,80316|1,82466|1,84620|0.85,86777|0.98,88932|1,90933|1,91995|1,");
+    out.writeLong(0); // timestamp but fuck that lmao
+    out.writeInt32(replay.getCompressedData().length);
+    out.write(replay.getCompressedData());
     out.writeInt64(replay.getOnlineScoreID());
     out.close();
   }
@@ -44,9 +46,9 @@ public class ReplayWriter {
         "{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
         replay.getHit100() + replay.getHit300(), replay.getHit50(),
         replay.getBeat300(), replay.getBeat100(), replay.getMisses(),
-        replay.getMd5(), replay.getMaxCombo(), true, replay.getUsername(),
-        replay.getPoints(), "SS" /* implement ranking */, replay.getMods(),
-        true));
+        replay.getBeatmapHash(), replay.getMaxCombo(),
+        Utilities.upper(replay.isPerfect()), replay.getUsername(),
+        replay.getPoints(), "A", replay.getMods(), "True"));
   }
 
   /*

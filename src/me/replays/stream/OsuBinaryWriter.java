@@ -49,7 +49,12 @@ public class OsuBinaryWriter extends DataOutputStream {
   }
 
   public void writeLine(String value) throws IOException {
+    if (value.length() == 0) {
+      writeByte(0x00);
+      return;
+    }
     byte[] v = value.getBytes("UTF-8");
+    writeByte(0x0B);
     write7BitEncodedInt(v.length);
     write(v);
   }

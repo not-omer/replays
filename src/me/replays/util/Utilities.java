@@ -23,4 +23,10 @@ public class Utilities {
   public static String md5(String string) {
     return DigestUtils.md5Hex(string);
   }
+ 
+  public static String upper(boolean bool) {
+    char[] c = Boolean.toString(bool).toCharArray();
+    c[0] = Character.toUpperCase(c[0]);
+    return new String(c);
+  }
 }
