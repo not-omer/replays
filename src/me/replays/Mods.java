@@ -16,4 +16,8 @@ public enum Mods {
   public int value() {
     return value;
   }
+
+  public static boolean has(int a, Mods b) {
+    return (a & b.value()) > Mods.None.value();
+  }
 }

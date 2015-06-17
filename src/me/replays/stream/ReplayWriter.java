@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
+import me.replays.Mods;
 import me.replays.Replay;
 import me.replays.util.Utilities;
 
@@ -42,15 +43,42 @@ public class ReplayWriter {
   }
 
   private String calcHash(Replay replay) throws UnsupportedEncodingException {
+    System.out.println(getRanking(replay));
     return Utilities.md5(MessageFormat.format(
         "{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
         replay.getHit100() + replay.getHit300(), replay.getHit50(),
         replay.getBeat300(), replay.getBeat100(), replay.getMisses(),
         replay.getBeatmapHash(), replay.getMaxCombo(),
         Utilities.upper(replay.isPerfect()), replay.getUsername(),
-        Integer.toString(replay.getPoints()), "A", replay.getMods(), "True"));
+        Integer.toString(replay.getPoints()), getRanking(replay), replay.getMods(), "True"));
   }
 
+  private String getRanking(Replay replay) {
+    int hitObjectCount = replay.getHit300() + replay.getHit100()
+        + replay.getHit50() + replay.getMisses();
+
+    float num = replay.getHit300() / (float) hitObjectCount;
+    float num2 = replay.getHit50() / (float) hitObjectCount;
+    if (num == 1f) {
+      if (!Mods.has(replay.getMods(), Mods.Hidden)
+          && !Mods.has(replay.getMods(), Mods.Flashlight))
+        return "X";
+      return "XH";
+    }
+    if (num > 0.9 && num2 <= 0.01 && replay.getMisses() == 0) {
+      if (!Mods.has(replay.getMods(), Mods.Hidden)
+          && !Mods.has(replay.getMods(), Mods.Flashlight))
+        return "S";
+      return "SH";
+    }
+    if ((num > 0.8 && replay.getMisses() == 0) || num > 0.9)
+      return "A";
+    if ((num > 0.7 && replay.getMisses() == 0) || num > 0.8)
+      return "B";
+    if (num > 0.6)
+      return "C";
+    return "D";
+  }
   /*
    * private String getDiagram(Replay replay) { StringBuilder stringBuilder =
    * new StringBuilder(); float num = 0.0f; for (int index = 0; index <
