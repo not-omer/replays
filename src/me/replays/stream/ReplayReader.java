@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import me.replays.Mode;
 import me.replays.Replay;
+import me.replays.util.OsuBinaryReader;
 import me.replays.util.Utilities;
 
 public class ReplayReader {

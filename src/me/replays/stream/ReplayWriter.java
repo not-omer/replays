@@ -8,6 +8,7 @@ import java.text.MessageFormat;
 
 import me.replays.Mods;
 import me.replays.Replay;
+import me.replays.util.OsuBinaryWriter;
 import me.replays.util.Utilities;
 
 public class ReplayWriter {
@@ -43,14 +44,14 @@ public class ReplayWriter {
   }
 
   private String calcHash(Replay replay) throws UnsupportedEncodingException {
-    System.out.println(getRanking(replay));
     return Utilities.md5(MessageFormat.format(
         "{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
         replay.getHit100() + replay.getHit300(), replay.getHit50(),
         replay.getBeat300(), replay.getBeat100(), replay.getMisses(),
         replay.getBeatmapHash(), replay.getMaxCombo(),
         Utilities.upper(replay.isPerfect()), replay.getUsername(),
-        Integer.toString(replay.getPoints()), getRanking(replay), replay.getMods(), "True"));
+        Integer.toString(replay.getPoints()), getRanking(replay),
+        replay.getMods(), "True"));
   }
 
   private String getRanking(Replay replay) {
@@ -79,6 +80,7 @@ public class ReplayWriter {
       return "C";
     return "D";
   }
+
   /*
    * private String getDiagram(Replay replay) { StringBuilder stringBuilder =
    * new StringBuilder(); float num = 0.0f; for (int index = 0; index <

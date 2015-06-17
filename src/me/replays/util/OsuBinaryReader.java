@@ -1,4 +1,4 @@
-package me.replays.stream;
+package me.replays.util;
 
 import java.io.DataInputStream;
 import java.io.IOException;
