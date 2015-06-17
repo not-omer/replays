@@ -1,4 +1,4 @@
-package me.replays.stream;
+package me.replays.parse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import me.replays.Mode;
 import me.replays.Replay;
-import me.replays.util.OsuBinaryReader;
+import me.replays.stream.OsuBinaryInputStream;
 import me.replays.util.Utilities;
 
 public class ReplayReader {
@@ -20,7 +20,7 @@ public class ReplayReader {
     if (!Utilities.getExtension(replay).equals("osr"))
       throw new IOException("not a valid .osr file!");
 
-    OsuBinaryReader in = new OsuBinaryReader(new FileInputStream(replay));
+    OsuBinaryInputStream in = new OsuBinaryInputStream(new FileInputStream(replay));
     Replay nReplay = new Replay();
 
     nReplay.setMode(Mode.values()[in.readByte()]);

@@ -1,12 +1,12 @@
-package me.replays.util;
+package me.replays.stream;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-public class OsuBinaryWriter extends DataOutputStream {
-  public OsuBinaryWriter(OutputStream out) {
+public class OsuBinaryOutputStream extends DataOutputStream {
+  public OsuBinaryOutputStream(OutputStream out) {
     super(out);
   }
 

@@ -13,7 +13,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorOutputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
-public class HardRockHelper {
+public class HardRockConverter {
   public static Replay convert(Replay replay) throws IOException,
       CompressorException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();

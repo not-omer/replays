@@ -1,4 +1,4 @@
-package me.replays.stream;
+package me.replays.parse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,7 @@ import java.text.MessageFormat;
 
 import me.replays.Mods;
 import me.replays.Replay;
-import me.replays.util.OsuBinaryWriter;
+import me.replays.stream.OsuBinaryOutputStream;
 import me.replays.util.Utilities;
 
 public class ReplayWriter {
@@ -19,7 +19,7 @@ public class ReplayWriter {
   }
 
   public void write(File output) throws IOException {
-    OsuBinaryWriter out = new OsuBinaryWriter(new FileOutputStream(output));
+    OsuBinaryOutputStream out = new OsuBinaryOutputStream(new FileOutputStream(output));
     out.writeByte((byte) replay.getMode().ordinal());
     out.writeInt32(20150414);
     out.writeLine(replay.getBeatmapHash());

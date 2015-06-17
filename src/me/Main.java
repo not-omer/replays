@@ -5,9 +5,8 @@ import java.io.IOException;
 
 import me.replays.Mods;
 import me.replays.Replay;
-import me.replays.stream.ReplayReader;
-import me.replays.stream.ReplayWriter;
-import me.replays.util.HardRockHelper;
+import me.replays.parse.ReplayReader;
+import me.replays.parse.ReplayWriter;
 
 import org.apache.commons.compress.compressors.CompressorException;
 
@@ -18,9 +17,9 @@ public class Main {
     Replay replay = reader.parse();
 
     replay.setUsername("AppleJuice");
-    replay.setMods(Mods.DoubleTime.value() | Mods.Hidden.value());
+    replay.setMods(Mods.DoubleTime.value() | Mods.Easy.value());
 
-    // replay = HardRockHelper.convert(replay);
+    // replay = HardRockConverter.convert(replay);
 
     ReplayWriter writer = new ReplayWriter(replay);
     writer.write(new File("replay2.osr"));
