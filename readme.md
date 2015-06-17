@@ -3,8 +3,6 @@
 convert replay to HR by inverting y values etc. (close to done)
 
 ##format
-ScoreDatabase.cs
-
 * byte - game mode
 * int32 - file version
 * string - beatmap md5 hash
