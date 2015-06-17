@@ -37,7 +37,7 @@ public class ReplayReader {
     nReplay.setPoints(in.getInt32());
     nReplay.setMaxCombo(in.getUInt16());
     nReplay.setPerfect(in.readBoolean());
-    nReplay.setMods(in.getInt32());
+    nReplay.setMods(in.getInt32(), false);
     nReplay.setDiagram(in.getLine());
     nReplay.setTimestamp(in.getDate());
     nReplay.setCompressedData(in.getBytes());

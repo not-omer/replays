@@ -42,44 +42,20 @@ public class OsuBinaryInputStream extends DataInputStream {
   }
 
   public long getInt64() throws IOException {
-    return ByteBuffer.wrap(readBytes(8)).order(ByteOrder.LITTLE_ENDIAN)
-        .getLong();
+    return ByteBuffer.wrap(readBytes(8)).order(ByteOrder.LITTLE_ENDIAN).getLong();
   }
 
   public int getInt32() throws IOException {
-    return ByteBuffer.wrap(readBytes(4)).order(ByteOrder.LITTLE_ENDIAN)
-        .getInt();
+    return ByteBuffer.wrap(readBytes(4)).order(ByteOrder.LITTLE_ENDIAN).getInt();
   }
 
   public int getInt16() throws IOException {
-    return ByteBuffer.wrap(readBytes(2)).order(ByteOrder.LITTLE_ENDIAN)
-        .getShort();
+    return ByteBuffer.wrap(readBytes(2)).order(ByteOrder.LITTLE_ENDIAN).getShort();
   }
 
   public int getUInt16() throws IOException {
     return getInt16() & 0xFFFF;
   }
-
-  /*
-   * public <T> List<T> getAll() { int capacity = in.readInt(); if (capacity <
-   * 0) return null; List<T> list = new ArrayList<T>(capacity); for (int i = 0;
-   * i < capacity; i++) { T item = new T(); item.ReadFromStream(this);
-   * list.Add(item); } return list; }
-   */
-
-  /*
-   * public Object get() throws IOException { switch (getByte()) { case 1:
-   * return readBoolean(); case 2: return getByte(); case 3: return
-   * readUnsignedShort(); case 4: return readInt() & 0xffffffffl; case 5: return
-   * readLong() & 0xffffffffl; // TODO ?? case 6: return readByte(); // sbyte
-   * case 7: return readShort(); case 8: return readInt(); case 9: return
-   * readLong(); case 10: return readChar(); case 11: return readUTF(); case 12:
-   * return readFloat(); case 13: return readDouble(); case 14: return
-   * readShort(); // TODO reads a 16 bit decimal, no idea how to // implement
-   * this case 15: return getDate(); case 16: return getBytes(); case 17: return
-   * getChars(); case 18: return null; // TODO implement this //
-   * BinaryObjectSerializer.ReadObject(BaseStream); default: return null; } }
-   */
 
   private int getStringLength() throws IOException {
     int count = 0;

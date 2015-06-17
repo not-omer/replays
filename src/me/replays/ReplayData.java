@@ -19,9 +19,7 @@ public class ReplayData {
 
   public void parse() throws IOException, CompressorException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    LZMACompressorInputStream in = new LZMACompressorInputStream(
-        new ByteArrayInputStream(replay.getCompressedData()));
-
+    LZMACompressorInputStream in = new LZMACompressorInputStream(new ByteArrayInputStream(replay.getCompressedData()));
     String text = new String(IOUtils.toByteArray(in));
     String[] split = text.split(",");
 
@@ -43,6 +41,10 @@ public class ReplayData {
     return actions;
   }
 
+  public void setActions(ArrayList<Action> actions) {
+    this.actions = actions;
+  }
+
   @Override
   public String toString() {
     StringBuilder buffer = new StringBuilder();
@@ -52,12 +54,13 @@ public class ReplayData {
   }
 
   public class Action {
-    private long w; // Time in milliseconds since the previous action
-    private float x, y; // x-coordinate of the cursor from 0 - 512, y-coordinate
-                        // of the cursor from 0 - 384
-    private int z; // Bitwise combination of keys/mouse buttons pressed (M1 = 1,
-                   // M2 = 2, K1 = 5, K2 = 10)
+    private long w;
+    private float x, y;
+    private int z;
 
+    /**
+     * @return Time in milliseconds since the previous action
+     */
     public long getW() {
       return w;
     }
@@ -66,6 +69,9 @@ public class ReplayData {
       this.w = w;
     }
 
+    /**
+     * @return x-coordinate of the cursor from 0 - 512
+     */
     public float getX() {
       return x;
     }
@@ -74,6 +80,9 @@ public class ReplayData {
       this.x = x;
     }
 
+    /**
+     * @return y-coordinate of the cursor from 0 - 384
+     */
     public float getY() {
       return y;
     }
@@ -82,6 +91,10 @@ public class ReplayData {
       this.y = y;
     }
 
+    /**
+     * @return Bitwise combination of keys/mouse buttons pressed (M1 = 1, M2 =
+     *         2, K1 = 5, K2 = 10)
+     */
     public int getZ() {
       return z;
     }

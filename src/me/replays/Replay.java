@@ -2,12 +2,14 @@ package me.replays;
 
 import java.util.Date;
 
+import me.replays.transforms.impl.HardRockTransform;
+import me.replays.transforms.impl.ScoreTransform;
+
 public class Replay {
   private Mode mode;
   private int fileVersion, mods;
   private long onlineScoreID;
-  private int hit300, hit100, hit50, beat300, beat100, misses, maxCombo,
-      points;
+  private int hit300, hit100, hit50, beat300, beat100, misses, maxCombo, points;
   private String md5, username, hash, diagram;
   private Date timestamp;
   private byte[] compressed;
@@ -30,7 +32,31 @@ public class Replay {
   }
 
   public void setMods(int mods) {
+    setMods(mods, true);
+  }
+
+  /**
+   * @param transform
+   *          If this is true, apply the score multipliers and hard rock
+   *          transform according to the mods set. This should usually be true,
+   *          unless setting the mods when parsing the replay file for the first
+   *          time.
+   */
+  public void setMods(int mods, boolean transform) {
     this.mods = mods;
+
+    if (transform)
+      try {
+        ScoreTransform st = new ScoreTransform();
+        this.points = st.apply(this).getPoints();
+
+        if (Mods.has(mods, Mods.HardRock)) {
+          HardRockTransform hrt = new HardRockTransform();
+          this.compressed = hrt.apply(this).getCompressedData();
+        }
+      } catch (Exception exception) {
+        exception.printStackTrace();
+      }
   }
 
   public void setOnlineScoreID(long l) {

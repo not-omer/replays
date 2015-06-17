@@ -4,12 +4,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 import me.replays.Mods;
 import me.replays.Replay;
+import me.replays.ReplayData;
+import me.replays.ReplayData.Action;
 import me.replays.stream.OsuBinaryOutputStream;
 import me.replays.util.Utilities;
+
+import org.apache.commons.compress.compressors.CompressorException;
 
 public class ReplayWriter {
   private Replay replay;
@@ -19,6 +25,8 @@ public class ReplayWriter {
   }
 
   public void write(File output) throws IOException {
+    System.out.println(getDiagram(replay));
+
     OsuBinaryOutputStream out = new OsuBinaryOutputStream(new FileOutputStream(output));
     out.writeByte((byte) replay.getMode().ordinal());
     out.writeInt32(20150414);
@@ -44,31 +52,24 @@ public class ReplayWriter {
   }
 
   private String calcHash(Replay replay) throws UnsupportedEncodingException {
-    return Utilities.md5(MessageFormat.format(
-        "{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
-        replay.getHit100() + replay.getHit300(), replay.getHit50(),
-        replay.getBeat300(), replay.getBeat100(), replay.getMisses(),
-        replay.getBeatmapHash(), replay.getMaxCombo(),
-        Utilities.upper(replay.isPerfect()), replay.getUsername(),
-        Integer.toString(replay.getPoints()), getRanking(replay),
-        replay.getMods(), "True"));
+    return Utilities.md5(MessageFormat.format("{0}p{1}o{2}o{3}t{4}a{5}r{6}e{7}y{8}o{9}u{10}{11}{12}",
+        replay.getHit100() + replay.getHit300(), replay.getHit50(), replay.getBeat300(), replay.getBeat100(),
+        replay.getMisses(), replay.getBeatmapHash(), replay.getMaxCombo(), Utilities.upper(replay.isPerfect()),
+        replay.getUsername(), Integer.toString(replay.getPoints()), getRanking(replay), replay.getMods(), "True"));
   }
 
   private String getRanking(Replay replay) {
-    int hitObjectCount = replay.getHit300() + replay.getHit100()
-        + replay.getHit50() + replay.getMisses();
+    int hitObjectCount = replay.getHit300() + replay.getHit100() + replay.getHit50() + replay.getMisses();
 
     float num = replay.getHit300() / (float) hitObjectCount;
     float num2 = replay.getHit50() / (float) hitObjectCount;
     if (num == 1f) {
-      if (!Mods.has(replay.getMods(), Mods.Hidden)
-          && !Mods.has(replay.getMods(), Mods.Flashlight))
+      if (!Mods.has(replay.getMods(), Mods.Hidden) && !Mods.has(replay.getMods(), Mods.Flashlight))
         return "X";
       return "XH";
     }
     if (num > 0.9 && num2 <= 0.01 && replay.getMisses() == 0) {
-      if (!Mods.has(replay.getMods(), Mods.Hidden)
-          && !Mods.has(replay.getMods(), Mods.Flashlight))
+      if (!Mods.has(replay.getMods(), Mods.Hidden) && !Mods.has(replay.getMods(), Mods.Flashlight))
         return "S";
       return "SH";
     }
@@ -81,15 +82,29 @@ public class ReplayWriter {
     return "D";
   }
 
-  /*
-   * private String getDiagram(Replay replay) { StringBuilder stringBuilder =
-   * new StringBuilder(); float num = 0.0f; for (int index = 0; index <
-   * this.list_0.Count; ++index) { Vector2 vector2 = this.list_0[index]; if
-   * ((double) vector2.X - (double) num > 2000.0 || index == this.list_0.Count -
-   * 1 || index == 0) { num = vector2.X; stringBuilder.AppendFormat( "{0}|{1},",
-   * (object) Math.Round((double) vector2.X, 2).ToString( (IFormatProvider)
-   * Class112.numberFormatInfo_0), (object) Math.Round((double) vector2.Y,
-   * 2).ToString( (IFormatProvider) Class112.numberFormatInfo_0)); } } return
-   * stringBuilder.toString(); }
-   */
+  private String getDiagram(Replay replay) {
+    DecimalFormat df = new DecimalFormat("0.#");
+    ReplayData data = new ReplayData(replay);
+    try {
+      data.parse();
+    } catch (IOException | CompressorException exception) {
+      exception.printStackTrace();
+    }
+
+    StringBuilder buffer = new StringBuilder();
+    ArrayList<Action> actions = data.getActions();
+
+    float num = 0.0f;
+    for (int index = 0; index < actions.size(); ++index) {
+      Action action = actions.get(index);
+      if (action.getX() - num > 2000f || index == actions.size() - 1 || index == 0) {
+        num = action.getX();
+        String a = df.format(Utilities.roundToSignificantFigures((double) action.getX(), 2));
+        String b = df.format(Utilities.roundToSignificantFigures((double) action.getY(), 2));
+        buffer.append(MessageFormat.format("{0}|{1},", a, b));
+      }
+    }
+
+    return buffer.toString();
+  }
 }

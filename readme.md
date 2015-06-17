@@ -1,5 +1,7 @@
 #replays
 ##todo
+timestamps
+create diagram (close to done)
 convert replay to HR by inverting y values etc. (close to done)
 
 ##format
